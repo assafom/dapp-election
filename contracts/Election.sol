@@ -1,4 +1,4 @@
-pragma solidity 0.4.22;
+pragma solidity 0.5.0;
 
 contract Election {
 
@@ -19,7 +19,7 @@ contract Election {
 
     uint public candidatesCount;
 
-    function Election() public {
+    constructor() public {
         candidatesCount = 0;
         addCandidate("Candi 1");
         addCandidate("Candi 2");
@@ -30,10 +30,10 @@ contract Election {
         require(_candidateId > 0 && _candidateId <= candidatesCount);
         hasVoted[msg.sender] = true;
         candidates[_candidateId].voteCount ++;
-        votedEvent(_candidateId);
+        emit votedEvent(_candidateId);
     }
 
-    function addCandidate (string _name) private {
+    function addCandidate (string memory _name) private {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }    

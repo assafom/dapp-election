@@ -110,7 +110,11 @@ App = {
     // Do not allow a user to vote
     if(hasVoted) {
       $('form').hide();
-    }  
+      $('#alreadyVoted').show();
+    } else {
+      $('form').show();
+      $('#alreadyVoted').hide();
+    }
     loader.hide();
     content.show();
   }

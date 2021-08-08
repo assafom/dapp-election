@@ -8,17 +8,18 @@ App = {
   },
 
   initWeb3: async function() {
-    if (typeof web3 !== 'undefined') {
+    if (window.ethereum) {
       // If a web3 instance is already provided by Meta Mask.
-      App.web3Provider = web3.currentProvider;
-      web3 = new Web3(web3.currentProvider);
-      try {
+      App.web3Provider = window.ethereum;
+      window.web3 = new Web3(window.ethereum);
+      window.ethereum.enable();
+      /*try {
         // Will open the MetaMask UI
         // You should disable this button while the request is pending!
         await ethereum.request({ method: 'eth_requestAccounts' });
       } catch (error) {
         console.error(error);
-      }
+      }*/
     } else {
       // Specify default instance if no web3 instance provided
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
@@ -35,7 +36,7 @@ App = {
       }).watch(function(error, event) {
         console.log("event triggered", event)
         // Reload when a new vote is recorded
-        App.render();
+        //App.render();
       });
     });
   },
@@ -58,11 +59,13 @@ App = {
     var instance = await App.contracts.Election.deployed();
     var voteResult = await instance.vote(candidateId, { from: App.account });
     // Wait for votes to update
-    $("#content").hide();
-    $("#loader").show();
+    /*$("#content").hide();
+    $("#loader").show();*/
+    App.render();
   },
 
   render: async function() {
+    console.log("render..");
     var electionInstance;
     var loader = $("#loader");
     var content = $("#content");
@@ -90,19 +93,18 @@ App = {
     candidatesSelect.empty();
 
     for (var i = 1; i <= candidatesCount; i++) {
-      electionInstance.candidates(i).then(function(candidate) {
-        var id = candidate[0];
-        var name = candidate[1];
-        var voteCount = candidate[2];
+      var candidate = await electionInstance.candidates(i);
+      var id = candidate[0];
+      var name = candidate[1];
+      var voteCount = candidate[2];
 
-        // Render candidate Result
-        var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
-        candidatesResults.append(candidateTemplate);
+      // Render candidate Result
+      var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+      candidatesResults.append(candidateTemplate);
 
-        // Render candidate ballot option
-        var candidateOption = "<option value='" + id + "' >" + name + "</ option>"
-        candidatesSelect.append(candidateOption);
-      });
+      // Render candidate ballot option
+      var candidateOption = "<option value='" + id + "' >" + name + "</ option>"
+      candidatesSelect.append(candidateOption);
     }
     var hasVoted = await electionInstance.hasVoted(App.account);
     // Do not allow a user to vote

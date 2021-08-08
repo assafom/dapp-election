@@ -28,27 +28,12 @@ App = {
     return App.initContract();
   },
 
-  listenForEvents: function() {
-    App.contracts.Election.deployed().then(function(instance) {
-      instance.votedEvent({}, {
-        fromBlock: 0,
-        toBlock: 'latest'
-      }).watch(function(error, event) {
-        console.log("event triggered", event)
-        // Reload when a new vote is recorded
-        //App.render();
-      });
-    });
-  },
-
   initContract: function() {
     $.getJSON("Election.json", function(election) {
       // Instantiate a new truffle contract from the artifact
       App.contracts.Election = TruffleContract(election);
       // Connect provider to interact with contract
       App.contracts.Election.setProvider(App.web3Provider);
-
-      App.listenForEvents();
 
       return App.render();
     });
@@ -58,9 +43,6 @@ App = {
     var candidateId = $('#candidatesSelect').val();
     var instance = await App.contracts.Election.deployed();
     var voteResult = await instance.vote(candidateId, { from: App.account });
-    // Wait for votes to update
-    /*$("#content").hide();
-    $("#loader").show();*/
     App.render();
   },
 
@@ -107,7 +89,7 @@ App = {
             console.log(response.toString());
             var divId = "#donationAmount" + i;
             console.log(divId);
-            $(divId).html(response.toNumber() / 1000000000000000000);
+            $(divId).html((response.toNumber() / 1000000000000000000) + " Eth");
           }
         });
       })(i);

@@ -16,12 +16,12 @@ contract("Election", async function(accounts) {
 
     var candidate = await electionInstance.candidates(1);
     assert.equal(candidate[0], 1, "contains the correct id");
-    assert.equal(candidate[1], "Candi 1", "contains the correct name");
+    assert.equal(candidate[1], "Candidate 1", "contains the correct name");
     assert.equal(candidate[2], 0, "contains the correct votes count");
 
     candidate = await electionInstance.candidates(2);
     assert.equal(candidate[0], 2, "contains the correct id");
-    assert.equal(candidate[1], "Candi 2", "contains the correct name");
+    assert.equal(candidate[1], "Candidate 2", "contains the correct name");
     assert.equal(candidate[2], 0, "contains the correct votes count");
   });
 

@@ -10,7 +10,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container" style="width: 650px;">
+    <div class="container" style="width: 700px;">
       <div class="row">
         <div class="col-lg-16">
           <h1 class="text-center">Election Results</h1>
@@ -34,19 +34,18 @@
               </tbody>
             </table>
             <hr />
-            <form onSubmit="App.castVote(); return false;">
+            <form onSubmit="App.castVote(); return false;" style="width: 50%; margin: 0 auto;">
               <div class="form-group">
-                <label for="candidatesSelect">Select Candidate</label>
+                <label for="candidatesSelect">Vote for candidate:</label>
                 <select class="form-control" id="candidatesSelect">
                 </select>
               </div>
               <button type="submit" class="btn btn-primary">Vote</button>
-              </hr>
             </form>
               <div id="alreadyVoted">
                 <p class="text-center">Your vote has been registered. Thanks for voting!</p>
-                <hr />
               </div>
+            <hr />
             <p id="accountAddress" class="text-center"></p>
           </div>
         </div>

@@ -22,8 +22,8 @@ contract Election {
 
     constructor() public {
         candidatesCount = 0;
-        addCandidate("Candi 1", 0x46b29B1F249D79C8634fbfA18fda9209fd4D0303);
-        addCandidate("Candi 2", 0x84D4477a1Aa1303EE8449283a6ac77EaA206b084);
+        addCandidate("Candidate 1", 0xD538dd5Eb9650017cB6DbFDdF2590B3a62B67780);
+        addCandidate("Candidate 2", 0x66580407a5921471e574F8E737143985Dee05BD9);
     }
 
     function vote(uint _candidateId) public {

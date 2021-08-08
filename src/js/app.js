@@ -40,7 +40,7 @@ App = {
     });
   },
 
-  initContract: async function() {
+  initContract: function() {
     $.getJSON("Election.json", function(election) {
       // Instantiate a new truffle contract from the artifact
       App.contracts.Election = TruffleContract(election);
@@ -90,18 +90,19 @@ App = {
     candidatesSelect.empty();
 
     for (var i = 1; i <= candidatesCount; i++) {
-      var candidate = await electionInstance.candidates(i);
-      var id = candidate[0];
-      var name = candidate[1];
-      var voteCount = candidate[2];
+      electionInstance.candidates(i).then(function(candidate) {
+        var id = candidate[0];
+        var name = candidate[1];
+        var voteCount = candidate[2];
 
-      // Render candidate Result
-      var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
-      candidatesResults.append(candidateTemplate);
+        // Render candidate Result
+        var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+        candidatesResults.append(candidateTemplate);
 
-      // Render candidate ballot option
-      var candidateOption = "<option value='" + id + "' >" + name + "</ option>"
-      candidatesSelect.append(candidateOption);
+        // Render candidate ballot option
+        var candidateOption = "<option value='" + id + "' >" + name + "</ option>"
+        candidatesSelect.append(candidateOption);
+      });
     }
     var hasVoted = await electionInstance.hasVoted(App.account);
     // Do not allow a user to vote

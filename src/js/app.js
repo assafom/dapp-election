@@ -97,9 +97,23 @@ App = {
       var id = candidate[0];
       var name = candidate[1];
       var voteCount = candidate[2];
+      var donationAddr = candidate[3];
+      var donationAmount = 0;
+      (async function getBalance(i) {
+        await web3.eth.getBalance(donationAddr, function(err, response) {
+          console.log(err);
+          console.log(response);
+          if (err === null) {
+            console.log(response.toString());
+            var divId = "#donationAmount" + i;
+            console.log(divId);
+            $(divId).html(response.toNumber() / 1000000000000000000);
+          }
+        });
+      })(i);
 
       // Render candidate Result
-      var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+      var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td><td>" + "<div id=donationAmount" + i + ">0</div>" + "</td><td>" + donationAddr + "</td></tr>"
       candidatesResults.append(candidateTemplate);
 
       // Render candidate ballot option
